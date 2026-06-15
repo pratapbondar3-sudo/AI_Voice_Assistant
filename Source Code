@@ -1,0 +1,168 @@
+import speech_recognition as sr
+
+r = sr.Recognizer()
+
+with sr.Microphone() as source:
+    
+    print("Speak something...")
+    
+    audio = r.listen(source)
+
+print("Voice captured successfully")
+import pyttsx3
+
+engine = pyttsx3.init()
+
+engine.say("Hello Madam")
+
+engine.runAndWait()
+import pyttsx3
+import speech_recognition as sr
+import wikipedia
+import webbrowser
+import datetime
+import pyjokes
+
+
+engine = pyttsx3.init()
+
+voices = engine.getProperty('voices')
+
+engine.setProperty('voice', voices[1].id)
+
+engine.setProperty('rate', 170)
+
+
+
+def speak(text):
+
+    print("Assistant:", text)
+
+    engine.say(text)
+
+    engine.runAndWait()
+
+
+
+def wish():
+
+    hour = datetime.datetime.now().hour
+
+    if hour < 12:
+        speak("Good Morning")
+
+    elif hour < 18:
+        speak("Good Afternoon")
+
+    else:
+        speak("Good Evening")
+
+    speak("I am your AI Voice Assistant")
+
+
+
+def take_command():
+
+    r = sr.Recognizer()
+
+    with sr.Microphone() as source:
+
+        print("Listening...")
+
+        r.pause_threshold = 1
+
+        audio = r.listen(source)
+
+    try:
+
+        print("Recognizing...")
+
+        command = r.recognize_google(
+            audio,
+            language='en-in'
+        )
+
+        print("You said:", command)
+
+    except Exception as e:
+
+        print(e)
+
+        speak("Please say again")
+
+        return "none"
+
+    return command.lower()
+
+
+
+def run_assistant():
+
+    wish()
+
+    while True:
+
+        command = take_command()
+
+        # Wikipedia
+        if "wikipedia" in command:
+
+            speak("Searching Wikipedia")
+
+            command = command.replace("wikipedia", "")
+            webbrowser.open("https://www.wikipedia.org")
+
+            result = wikipedia.summary(command, sentences=2)
+
+            print(result)
+
+            speak(result)
+
+        # Open YouTube
+        elif "open youtube" in command:
+
+            speak("Opening YouTube")
+
+            webbrowser.open("https://youtube.com")
+
+        # Open Google
+        elif "open google" in command:
+
+            speak("Opening Google")
+
+            webbrowser.open("https://google.com")
+
+        # Time
+        elif "time" in command:
+
+            current_time = datetime.datetime.now().strftime("%H:%M:%S")
+
+            speak(f"The time is {current_time}")
+
+        # Joke
+        elif "joke" in command:
+
+            joke = pyjokes.get_joke()
+
+            print(joke)
+
+            speak(joke)
+            
+        # Open WhatsApp
+        elif "open hotstar" in command:
+            speak("Opening Hotstar")
+            webbrowser.open("https://www.hotstar.com/in/home")
+
+        # Exit
+        elif "exit" in command or "stop" in command:
+
+            speak("Goodbye")
+
+            break
+
+        else:
+
+            speak("Sorry I did not understand")
+
+
+run_assistant()
