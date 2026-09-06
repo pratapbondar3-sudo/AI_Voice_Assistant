@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-PKL_FILE_PATH = "model.pkl"
+PKL_FILE_PATH = "assistant_data.pkl"
 
 @st.cache_data
 def load_assistant_data(file_path):
