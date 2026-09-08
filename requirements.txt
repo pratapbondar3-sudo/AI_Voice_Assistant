@@ -1,3 +1,6 @@
 streamlit
 SpeechRecognition
 gTTS
+wikipedia
+pyjokes
+pydub
